@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "5803fbbc-1d3b-4493-ba83-4f95cad703d3",
+		"name": "didighar api call",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://localhost:5001/api/Accounts",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"1171077180442028\",\r\n    \"email\": \"sophia@gmail.com\",\r\n    \"verified_email\": true,\r\n    \"name\": null,\r\n    \"given_name\": null,\r\n    \"family_name\": null,\r\n    \"link\": null,\r\n    \"picture\": \"https://lh3.googleusercontent.com/a-/abc\",\r\n    \"gender\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/Accounts",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:44399/api/Account/RegisterPartner",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\":\"sophia@gmail.com\",\r\n    \"Password\":\"Welcome@123\",\r\n    \"ConfirmPassword\":\"Welcome@123\",\r\n    \"PhoneNumber\":\"123456789\",\r\n    \"UserName\":\"sophia@gmail.com\",\r\n    \"UserType\":1,\r\n    \"FirstName\":\"Sophia\",\r\n    \"LastName\":\"Ray\",\r\n    \"Gender\":1,\r\n    \"Services\":\"Women Grooming\",\r\n    \"Address\":\"Flat ABCD\",\r\n    \"Address1\":\"Flat ABCD2\",\r\n    \"Address2\":\"Flat ABCD3\",\r\n    \"City\":1,\r\n    \"State\":4,\r\n    \"Country\":1,\r\n    \"Pincode\":1,\r\n    \"Picture\":\"abc\",\r\n    \"CreatedOnUtc\":\"17-Nov-2020\",\r\n    \"ModifiedOnUtc\":\"17-Nov-2020\",\r\n    \"IsActive\":true\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:44399/api/Account/RegisterPartner",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "44399",
+					"path": [
+						"api",
+						"Account",
+						"RegisterPartner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:44399/api/Account/RegisterPartner Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\":\"sophia@gmail.com\",\r\n    \"Password\":\"Welcome@123\",\r\n    \"ConfirmPassword\":\"Welcome@123\",\r\n    \"PhoneNumber\":\"123456789\",\r\n    \"UserName\":\"sophia@gmail.com\",\r\n    \"UserType\":1,\r\n    \"FirstName\":\"Sophia\",\r\n    \"LastName\":\"Ray\",\r\n    \"Gender\":1,\r\n    \"Services\":\"Women Grooming\",\r\n    \"Address\":\"Flat ABCD\",\r\n    \"Address1\":\"Flat ABCD2\",\r\n    \"Address2\":\"Flat ABCD3\",\r\n    \"City\":1,\r\n    \"State\":4,\r\n    \"Country\":1,\r\n    \"Pincode\":1,\r\n    \"Picture\":\"abc\",\r\n    \"CreatedOnUtc\":\"17-Nov-2020\",\r\n    \"ModifiedOnUtc\":\"17-Nov-2020\",\r\n    \"IsActive\":true\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:44399/api/Account/RegisterPartner",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "44399",
+					"path": [
+						"api",
+						"Account",
+						"RegisterPartner"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

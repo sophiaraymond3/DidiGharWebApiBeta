@@ -1,0 +1,51 @@
+{
+	"info": {
+		"_postman_id": "1e85f449-2195-4bb6-be4d-63f3f74890d6",
+		"name": "Login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:44399/token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "sunny971613@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Sunny@110012",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:44399/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "44399",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

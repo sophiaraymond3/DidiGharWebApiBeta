@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "2b6dca04-c905-4cd4-af03-8edfec15b3f6",
+		"name": "user-register",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:44399/api/account/register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\": \"sunny971@gmail.com\",\r\n    \"Password\": \"Sunny@110012\",\r\n    \"ConfirmPassword\":\"Sunny@110012\",\r\n    \"UserName\":\"sunny971@gmail.com\",\r\n    \"RoleId\":0,\r\n    \"FirstName\" : \"Sunny\",\r\n    \"LastName\": \"Kumar\",\r\n    \"PhoneAreaCode\":91,\r\n    \"PhoneNumber\":888244,\r\n    \"Gender\":1,\r\n    \"IsActive\":0,\r\n    \"CreatedOnUtc\":\"2020-07-28 11:00:00.0000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:44399/api/account/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "44399",
+					"path": [
+						"api",
+						"account",
+						"register"
+					]
+				},
+				"description": "user register"
+			},
+			"response": []
+		}
+	]
+}

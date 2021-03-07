@@ -1,0 +1,48 @@
+{
+	"info": {
+		"_postman_id": "741ef41a-12e2-49fa-964b-eadfcc52d515",
+		"name": "AddressRegister",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:44399/api/Address",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"UserId\": 3,\r\n    \"Address\": \"Wz-114A\",\r\n    \"Address1\":\"Wz-51\",\r\n    \"Address2\":\"Delhi\",\r\n    \"City\":1,\r\n    \"State\":1,\r\n    \"Country\":1,\r\n    \"Pincode\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:44399/api/Address",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "44399",
+					"path": [
+						"api",
+						"Address"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
