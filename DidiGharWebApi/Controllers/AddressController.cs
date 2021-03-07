@@ -50,7 +50,8 @@ namespace DidiGharWebApi.Controllers
         public List<UserAddress> GetAddressList(string username)
         {
             var address = db.AppUsers.Include(x =>x.UserAddresses).FirstOrDefault(x => x.UserName == username).UserAddresses;
-            return address.ToList();
+
+            return address.ToList();  
         }
 
         // GET: api/Address/5
