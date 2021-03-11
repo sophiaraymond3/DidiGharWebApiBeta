@@ -21,7 +21,8 @@ namespace DidiGharWebApi.Controllers
             return address;
         }
 
-        public List<DateTime> GetTimeSlots(Request request)
+        [Route("GetTimeSlots")]
+        public List<TimeSlotResponse> GetTimeSlots(int serviceId)
         {
             //Step 1: Fetch RequestednUtc and EstimatedDuration from Request Table. Calculate total Timespan .
             //- ReqeustednUtc : starting time of service ex - 10Am
@@ -44,7 +45,7 @@ namespace DidiGharWebApi.Controllers
 
             //Step3: Fetch all partners against service Id available within the address serviceable parameter. 
 
-            var partners = db.ServiceProviders.Where(x => x.ServiceId == request.RequestMaps.FirstOrDefault().ServiceId).ToList();
+            var partners = db.ServiceProviders.Where(x => x.ServiceId == serviceId).ToList();
 
             //Step4: Create Time Span from 09:00 AM to 06:00 PM.
 
@@ -56,20 +57,36 @@ namespace DidiGharWebApi.Controllers
             var partnersAvailable = partners.Any(x => !UpdatedTime.Select(y => y.PartnerId).ToList().Contains(x.Id));
 
             //Step6: Mark that time span as unavailable in the created Time Span.
-
+            var intervalTimeSlot = startOfTheDay;
             List<TimeSlotResponse> timeSlots = new List<TimeSlotResponse>();
             for (int i = 0; i <= 18; i++)
             {
                 timeSlots.Add(new TimeSlotResponse()
                 {
-                    TimeSlot = startOfTheDay.AddMinutes(30),
+                    TimeSlot = intervalTimeSlot,
                     Disabled=false
                 });
+                intervalTimeSlot = intervalTimeSlot.AddMinutes(30);
             }
 
             if (!partnersAvailable)
             {
-                
+                //list of appointment to and from
+
+                //for each appointment check if all partners have appointment
+
+                //if everyone is busy then disable time slot
+
+                //else timeslot available to be picked
+
+                foreach (var appointmemt in UpdatedTime)
+                {
+                    var slotFree = UpdatedTime.Any(x => x.EndTimeSlot < appointmemt.StartTimeSlot || x.StartTimeSlot > appointmemt.EndTimeSlot);
+                    if (!slotFree)
+                    {
+                        timeSlots.Where(x => x.TimeSlot.TimeOfDay >= appointmemt.StartTimeSlot.TimeOfDay && x.TimeSlot.TimeOfDay <= appointmemt.EndTimeSlot.TimeOfDay).ToList().ForEach(f=>f.Disabled=true);
+                    }
+                }
             }
 
             //Step7: Return available time slots for user to pick.
