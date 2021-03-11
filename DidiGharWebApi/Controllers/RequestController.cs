@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace DidiGharWebApi.Controllers
 {
@@ -64,7 +66,7 @@ namespace DidiGharWebApi.Controllers
                 timeSlots.Add(new TimeSlotResponse()
                 {
                     TimeSlot = intervalTimeSlot,
-                    Disabled=false
+                    Disabled = false
                 });
                 intervalTimeSlot = intervalTimeSlot.AddMinutes(30);
             }
@@ -93,6 +95,34 @@ namespace DidiGharWebApi.Controllers
 
             return timeSlots;
         }
+
+        [ResponseType(typeof(RequestMap))]
+        public async Task<IHttpActionResult> PostRequest(Request model)
+        {
+            model.AssignedTo = null;
+            db.Requests.Add(model);
+            db.SaveChanges();
+            return Ok();
+        }
+
+        //public List<ServiceProvider> GetProviderAvailable(DateTime pickedTimeSlot, int pincode,int serviceId)
+        //{
+        //    var pickedSlot = DateTime.Now;
+        //    //Getting the nearest partners available to the requester pincode
+        //    var providers = db.ServiceProviders.Where(x => x.ServiceId == serviceId && x.Pincode == pincode).Select(x => x.Id).ToList();
+
+        //    int assignedTo = 0;
+        //    //Providers with 0 request with nearest pincode
+        //    var blankProviders = db.Requests.Any(x => providers.Contains(x.Id));
+        //    if(blankProviders)
+        //    {
+        //        assignedTo = db.Requests.Where(x => x.AssignedTo == providers;
+        //    }
+        //    else
+        //    {
+
+        //    }
+        //}
 
     }
 }
