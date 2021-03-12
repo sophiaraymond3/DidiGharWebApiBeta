@@ -350,12 +350,14 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AddressController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Data\City.cs" />
     <Compile Include="Data\Country.cs" />
+    <Compile Include="Data\EmailContent.cs" />
     <Compile Include="Data\Gender.cs" />
     <Compile Include="Data\Pincode.cs" />
     <Compile Include="Data\Plan.cs" />
