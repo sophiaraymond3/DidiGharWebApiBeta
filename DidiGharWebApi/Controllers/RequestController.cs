@@ -99,30 +99,33 @@ namespace DidiGharWebApi.Controllers
         [ResponseType(typeof(RequestMap))]
         public async Task<IHttpActionResult> PostRequest(Request model)
         {
-            model.AssignedTo = null;
+            model.AssignedTo = await GetProviderAvailable(model.RequestedOnUtc.GetValueOrDefault(), model.EstimatedDuration, model.UserAddress.pincode.PinCode.GetValueOrDefault(), model.RequestMaps.FirstOrDefault().ServiceId.GetValueOrDefault());
             db.Requests.Add(model);
             db.SaveChanges();
             return Ok();
         }
 
-        //public List<ServiceProvider> GetProviderAvailable(DateTime pickedTimeSlot, int pincode,int serviceId)
-        //{
-        //    var pickedSlot = DateTime.Now;
-        //    //Getting the nearest partners available to the requester pincode
-        //    var providers = db.ServiceProviders.Where(x => x.ServiceId == serviceId && x.Pincode == pincode).Select(x => x.Id).ToList();
+        public Task<int> GetProviderAvailable(DateTime pickedTimeSlot, TimeSpan duration, int pincode, int serviceId)
+        {
+            int assignedTo = 0;
+            var endTimeSlot = pickedTimeSlot.Add(duration);
+            //Getting the nearest partners available to the requester pincode
+            var providers = db.ServiceProviders.Where(x => x.ServiceId == serviceId && x.Pincode == pincode && 
+                            x.Requests.Any(y=> y.RequestedOnUtc.GetValueOrDefault().TimeOfDay > endTimeSlot.TimeOfDay && 
+                            y.RequestedOnUtc.GetValueOrDefault().Add(y.EstimatedDuration) < pickedTimeSlot)).ToList();
 
-        //    int assignedTo = 0;
-        //    //Providers with 0 request with nearest pincode
-        //    var blankProviders = db.Requests.Any(x => providers.Contains(x.Id));
-        //    if(blankProviders)
-        //    {
-        //        assignedTo = db.Requests.Where(x => x.AssignedTo == providers;
-        //    }
-        //    else
-        //    {
-
-        //    }
-        //}
+            if (providers?.Count>0)
+            {
+                var ratings = db.UserFeedbacks.Where(x => providers.Select(p => p.Id).Contains(x.Request.ServiceProvider.Id)).ToList();
+                var orderedRatings = ratings.GroupBy(x => x.Request.AssignedTo).OrderByDescending(O => O.Sum(s => s.Rating));
+                assignedTo = orderedRatings.FirstOrDefault().Select(x => x.Request.AssignedTo.GetValueOrDefault()).FirstOrDefault();
+            }
+            else
+            {
+                //To Do : Expand Search using lattitute longitude based on closest pincode
+            }
+            return Task.FromResult(assignedTo);
+        }
 
     }
 }
