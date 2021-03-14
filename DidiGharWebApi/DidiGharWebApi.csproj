@@ -373,6 +373,7 @@
     <Compile Include="Data\UseFeedback.cs" />
     <Compile Include="Data\User.cs" />
     <Compile Include="Data\UserAddress.cs" />
+    <Compile Include="Data\VerificationToken.cs" />
     <Compile Include="ExtensionMethod.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -456,6 +457,10 @@
     <Compile Include="Migrations\202103091847202_UpdatedColumnsRequest.cs" />
     <Compile Include="Migrations\202103091847202_UpdatedColumnsRequest.Designer.cs">
       <DependentUpon>202103091847202_UpdatedColumnsRequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103121424110_emailVerificationToken.cs" />
+    <Compile Include="Migrations\202103121424110_emailVerificationToken.Designer.cs">
+      <DependentUpon>202103121424110_emailVerificationToken.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -628,6 +633,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103091847202_UpdatedColumnsRequest.resx">
       <DependentUpon>202103091847202_UpdatedColumnsRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103121424110_emailVerificationToken.resx">
+      <DependentUpon>202103121424110_emailVerificationToken.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
