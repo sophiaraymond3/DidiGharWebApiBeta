@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Data.Entity;
 using System.Web.Http.Description;
+using Newtonsoft.Json;
 
 namespace DidiGharWebApi.Controllers
 {
@@ -47,11 +48,30 @@ namespace DidiGharWebApi.Controllers
         }
 
         [Route("GetAddressList")]
-        public List<UserAddress> GetAddressList(string username)
+        public List<UserAddressResponse> GetAddressList(string username)
         {
             var address = db.AppUsers.Include(x =>x.UserAddresses).FirstOrDefault(x => x.UserName == username).UserAddresses;
+            List<UserAddressResponse> userAddress = new List<UserAddressResponse>();
+            foreach(var item in address)
+            {
+                userAddress.Add(new UserAddressResponse()
+                {
+                    Id=item.Id,
+                    Address= item.Address,
+                    Address1 = item.Address1,
+                    Address2 = item.Address2,
+                    City = item.City,
+                    Country = item.Country,
+                    State = item.State,
+                    CreatedOnUTC = item.createdOnUtc.GetValueOrDefault(),
+                    ModifiedOnUTC = item.ModifiedOnUtc.GetValueOrDefault(),
+                    IsActive = item.IsActive.GetValueOrDefault(),
+                    UserId = item.UserId,
+                    Pincode = item.Pincode
+                });
+            }
 
-            return address.ToList();  
+            return userAddress ;  
         }
 
         // GET: api/Address/5
@@ -68,7 +88,7 @@ namespace DidiGharWebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            model.UserId = db.AppUsers.FirstOrDefault(x => x.Email == model.Username).Id;
             db.UserAddresses.Add(model);
             await db.SaveChangesAsync();
 
