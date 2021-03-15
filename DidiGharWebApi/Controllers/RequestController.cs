@@ -24,7 +24,7 @@ namespace DidiGharWebApi.Controllers
         }
 
         [Route("GetTimeSlots")]
-        public List<TimeSlotResponse> GetTimeSlots(int serviceId)
+        public List<TimeSlotResponse> GetTimeSlots(int serviceId,int cityId)
         {
             //Step 1: Fetch RequestednUtc and EstimatedDuration from Request Table. Calculate total Timespan .
             //- ReqeustednUtc : starting time of service ex - 10Am
@@ -47,7 +47,7 @@ namespace DidiGharWebApi.Controllers
 
             //Step3: Fetch all partners against service Id available within the address serviceable parameter. 
 
-            var partners = db.ServiceProviders.Where(x => x.ServiceId == serviceId).ToList();
+            var partners = db.ServiceProviders.Where(x => x.ServiceId == serviceId && x.City == cityId).ToList();
 
             //Step4: Create Time Span from 09:00 AM to 06:00 PM.
 
@@ -99,13 +99,13 @@ namespace DidiGharWebApi.Controllers
         [ResponseType(typeof(RequestMap))]
         public async Task<IHttpActionResult> PostRequest(Request model)
         {
-            model.AssignedTo = await GetProviderAvailable(model.RequestedOnUtc.GetValueOrDefault(), model.EstimatedDuration, model.UserAddress.pincode.PinCode.GetValueOrDefault(), model.RequestMaps.FirstOrDefault().ServiceId.GetValueOrDefault());
+            model.AssignedTo = await GetProviderAvailable(model.RequestedOnUtc.GetValueOrDefault(), model.EstimatedDuration, model.UserAddress.pincode.PinCode.GetValueOrDefault(), model.RequestMaps.FirstOrDefault().ServiceId.GetValueOrDefault(),model.UserAddress.City.GetValueOrDefault());
             db.Requests.Add(model);
             db.SaveChanges();
             return Ok();
         }
 
-        public Task<int> GetProviderAvailable(DateTime pickedTimeSlot, TimeSpan duration, int pincode, int serviceId)
+        public Task<int> GetProviderAvailable(DateTime pickedTimeSlot, TimeSpan duration, int pincode, int serviceId,int cityId)
         {
             int assignedTo = 0;
             var endTimeSlot = pickedTimeSlot.Add(duration);
@@ -122,6 +122,20 @@ namespace DidiGharWebApi.Controllers
             }
             else
             {
+                var otherProviders = db.ServiceProviders.Where(x => x.City == cityId && x.ServiceId == serviceId && x.Pincode != pincode).ToList();
+                var getRandomProviders = otherProviders.Where(x=>x.Requests.Any(y => y.RequestedOnUtc.GetValueOrDefault().TimeOfDay > endTimeSlot.TimeOfDay &&
+                            y.RequestedOnUtc.GetValueOrDefault().Add(y.EstimatedDuration) < pickedTimeSlot)).ToList();
+                
+                if (getRandomProviders?.Count > 0)
+                {
+                    var ratings = db.UserFeedbacks.Where(x => getRandomProviders.Select(p => p.Id).Contains(x.Request.ServiceProvider.Id)).ToList();
+                    var orderedRatings = ratings.GroupBy(x => x.Request.AssignedTo).OrderByDescending(O => O.Sum(s => s.Rating));
+                    assignedTo = orderedRatings.FirstOrDefault().Select(x => x.Request.AssignedTo.GetValueOrDefault()).FirstOrDefault();
+                }
+                else
+                {
+                    //To Do:Send Manual Email for operation and management
+                }
                 //To Do : Expand Search using lattitute longitude based on closest pincode
             }
             return Task.FromResult(assignedTo);

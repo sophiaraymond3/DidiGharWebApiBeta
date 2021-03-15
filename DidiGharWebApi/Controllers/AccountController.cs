@@ -21,6 +21,7 @@ using System.Text;
 using BCrypt.Net;
 using DidiGharWebApi.Data;
 using Microsoft.Graph;
+using System.Net.Mail;
 
 namespace DidiGharWebApi.Controllers
 {
@@ -351,6 +352,7 @@ namespace DidiGharWebApi.Controllers
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            
 
             if (!result.Succeeded)
             {
@@ -388,7 +390,67 @@ namespace DidiGharWebApi.Controllers
             };
             db.UserAddresses.Add(address);
             db.SaveChanges();
+            var token = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            var callbackUrl = Url.Link("DefaultApi", new { Controller = "Account/ConfirmEmail", userId = user.Id, code = token });
+            EmailContent email = new EmailContent()
+            {
+                From = "info@didighar.in",
+                To = model.Email,
+                Subject = "Confirmation Mail",
+                Body = "Please click on the url for email confirmation" + "<a href=" + callbackUrl + " class='btn btn-primary'>Verify Email Id</a>"
+            };
+
+            VerificationToken tokenModel = new VerificationToken()
+            {
+                UserId = user.Id,
+                Token = token,
+                CreatedOn = DateTime.Now
+            };
+
+            db.VerificationTokens.Add(tokenModel);
+            db.SaveChanges();
+            await SendEmail(email);
+            return Ok();
+        }
+
+        [Route("ConfirmEmail")]
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IHttpActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return NotFound();
+            }
             
+            bool result = db.VerificationTokens.Any(x => x.UserId == userId && x.Token == code);
+            if (result)
+            {
+                var emailconfirmed = db.Users.Find(userId);
+                emailconfirmed.EmailConfirmed = true;
+                db.SaveChanges();
+                return Ok("Your email has been verified successfully. Please login to continue");
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
+        public async Task<IHttpActionResult> SendEmail(EmailContent model)
+        {
+            MailMessage message = new MailMessage();
+            message.IsBodyHtml = true;
+            message.From = new MailAddress(model.From);
+
+            message.To.Add(model.To);
+
+            message.Subject = model.Subject;
+            message.Body = model.Body;
+
+            SmtpClient client = new SmtpClient();
+            client.Send(message);
             return Ok();
         }
 
@@ -461,6 +523,8 @@ namespace DidiGharWebApi.Controllers
 
             return Ok();
         }
+
+        
 
         // POST api/Account/RegisterExternal
 

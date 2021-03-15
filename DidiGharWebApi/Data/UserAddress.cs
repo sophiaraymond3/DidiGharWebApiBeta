@@ -39,5 +39,8 @@ namespace DidiGharWebApi.Data
         public ICollection<Request> Requests { get; set; }
         public State state { get; set; }
         public User User { get; set; }
+        
+        [NotMapped]
+        public string Username { get; set; }
     }
 }

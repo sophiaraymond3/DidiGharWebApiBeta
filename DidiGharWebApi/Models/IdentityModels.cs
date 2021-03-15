@@ -27,6 +27,7 @@ namespace DidiGharWebApi.Models
         {
         }
 
+        public DbSet<VerificationToken> VerificationTokens { get; set; }
         public  DbSet<City> Cities { get; set; }
         public  DbSet<Country> Countries { get; set; }
         public  DbSet<Gender> Genders { get; set; }

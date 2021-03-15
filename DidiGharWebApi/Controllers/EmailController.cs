@@ -7,13 +7,15 @@ using System.Net.Http;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace DidiGharWebApi.Controllers
 {
     [RoutePrefix("api/Email")]
-    public class EmailController : ApiController
+    public  class EmailController : ApiController
     {
         [Route("SendEmail")]
+        [ResponseType(typeof(EmailContent))]
         public async Task<IHttpActionResult> SendEmail(EmailContent model)
         {
             MailMessage message = new MailMessage();
