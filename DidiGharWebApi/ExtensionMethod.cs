@@ -7,14 +7,14 @@ namespace DidiGharWebApi
 {
     public static class ExtensionMethod
     {
-        public static DateTime EndOfDay(this DateTime date)
+        public static DateTime EndOfDay(this DateTime date, DateTime dateTime)
         {
-            return new DateTime(date.Year, date.Month, date.Day, 18, 0, 0, 0);
+            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 18, 0, 0, 0);
         }
 
-        public static DateTime StartOfDay(this DateTime date)
+        public static DateTime StartOfDay(this DateTime date, DateTime dateTime)
         {
-            return new DateTime(date.Year, date.Month, date.Day, 9, 0, 0, 0);
+            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 9, 0, 0, 0);
         }
     }
 }
